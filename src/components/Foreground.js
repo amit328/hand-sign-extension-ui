@@ -54,7 +54,7 @@ function Foreground() {
     window.onunload = async function(){
         let token = window.localStorage.getItem('sign_token');
         if(token){
-            await axios.delete(`https://tranquil-tor-13610.herokuapp.com/hoster/${location.pathname}/${token}`); 
+            await axios.delete(`https://hand-sign-extension-ui.herokuapp.com/hoster/${location.pathname}/${token}`); 
         }
     }
     setInterval(() => {
@@ -66,7 +66,7 @@ function Foreground() {
                 e.preventDefault();
                 if(e.target.classList.contains('active')){
                     let token = window.localStorage.getItem('sign_token');
-                    const testHoster = await axios.delete(`https://tranquil-tor-13610.herokuapp.com/hoster/${location.pathname}/${token}`);
+                    const testHoster = await axios.delete(`https://hand-sign-extension-ui.herokuapp.com/hoster/${location.pathname}/${token}`);
                     if(testHoster.data.status == 'ok'){
                         window.localStorage.removeItem('sign_token');
                         e.target.classList.remove('active');
@@ -80,17 +80,17 @@ function Foreground() {
                 if(!token){
                     token = (Math.random() + 1).toString(36).substring(7);
                 }
-                const testHoster = await axios.post(`https://tranquil-tor-13610.herokuapp.com/hoster/${location.pathname}/${token}`);
+                const testHoster = await axios.post(`https://hand-sign-extension-ui.herokuapp.com/hoster/${location.pathname}/${token}`);
 
                 if(testHoster.data.status == 'again'){
                     e.target.classList.add('active');
-                    document.documentElement.insertAdjacentHTML('afterbegin', `<iframe class='hand_sign active' src="https://tranquil-tor-13610.herokuapp.com/video?h=${360}&w=${640}&token=${token}" scrolling="no" style="overflow: hidden;" allow="camera;microphone"></iframe>`);
+                    document.documentElement.insertAdjacentHTML('afterbegin', `<iframe class='hand_sign active' src="https://hand-sign-extension-ui.herokuapp.com/video?h=${360}&w=${640}&token=${token}" scrolling="no" style="overflow: hidden;" allow="camera;microphone"></iframe>`);
                     return
                 }
                 if(testHoster.data.status == 'ok'){
                     window.localStorage.setItem('sign_token', token);
                     e.target.classList.add('active');
-                    document.documentElement.insertAdjacentHTML('afterbegin', `<iframe class='hand_sign active' src="https://tranquil-tor-13610.herokuapp.com/video?h=${360}&w=${640}&token=${token}" scrolling="no" style="overflow: hidden;" allow="camera;microphone"></iframe>`);
+                    document.documentElement.insertAdjacentHTML('afterbegin', `<iframe class='hand_sign active' src="https://hand-sign-extension-ui.herokuapp.com/video?h=${360}&w=${640}&token=${token}" scrolling="no" style="overflow: hidden;" allow="camera;microphone"></iframe>`);
                     return
                 }
                 //already hosted
@@ -121,7 +121,7 @@ function Foreground() {
                 playVoice = false;
             });
             async function getSentence() {
-                const req = await axios.get(`https://tranquil-tor-13610.herokuapp.com/hoster/${location.pathname}/get`);
+                const req = await axios.get(`https://hand-sign-extension-ui.herokuapp.com/hoster/${location.pathname}/get`);
                 let text = req.data.sentence;
                 if(typeof text == 'object') {
                     if(text.length == 0) return;
